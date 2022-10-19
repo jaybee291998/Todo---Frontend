@@ -1,7 +1,7 @@
-<h2>Task Creation</h2>
+<h3>Create Task</h3>
 
 <form action="">
     <label for="task-body">Task:</label>
     <input type="text" name="task-body" ng-model="taskBody">
-    <input type="button" value="post" ng-click="postToServer()" ng-show="taskBody.length > 12 && taskBody.length < 64">
+    <input type="button" value="post" ng-click="postToServer()" ng-show="taskBody.length > 8 && taskBody.length < 64">
 </form>

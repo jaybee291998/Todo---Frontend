@@ -1,1 +1,6 @@
-<p>{{todoItemData.done}}: {{todoItemData.body}}</p> 
+<div>
+    <p ng-class="{'strike':todoItemData.done}" class="">
+        {{todoItemData.body}}
+    </p> 
+    <div ng-transclude></div>
+</div>

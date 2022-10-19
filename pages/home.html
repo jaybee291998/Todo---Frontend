@@ -1,4 +1,10 @@
-<h2>Home</h2>
+<h3>To Do</h3>
+<p ng-show="taskCount>0">Number of task to do: {{taskCount}}</p>
+<p ng-show="taskCount<=0">You've finished all your task. Great work!</p>
 <ul>
-    <li ng-repeat="task in myTasks"><todo-item todo-item-data="task"></todo-item></li>
+    <li ng-repeat="task in myTasks" ng-click="toggleBtn(task.id)">
+        <todo-item todo-item-data="task">
+            <p ng-click="deleteTask(task.id)">delete</p>
+        </todo-item>
+    </li>
 </ul>

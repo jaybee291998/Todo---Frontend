@@ -1,25 +1,38 @@
 todoApp.controller('homeController', ['$scope', '$timeout', '$interval', 'todoService', function($scope, $timeout, $interval, todoService){
-    
-    // $interval(function(){
-    //     $scope.myTasks = todoService.getTodoData();
-    //     console.log(todoService.dataInitiliazed);
-    //     if(todoService.dataInitiliazed) return;
-    // }, 1000);
+    $scope.taskCount = 0;
+    let init = async function(){
+        let data = await todoService.initializeData();
+        $timeout(()=>{
+            $scope.myTasks = data;
+            $scope.taskCount = $scope.myTasks.filter(task => !task.done).length;
+        }, 0);
+        console.log("re-initialized");
+        
+    }
 
-    // wait for the to do data initialized
-    $timeout(function(){
-        $scope.myTasks = todoService.getTodoData();
-        // console.log($scope.myTasks);
-    }, 100);
+    init();
+
+    $scope.toggleBtn = async function(id){
+        await todoService.updateTaskDone(id);
+        init();
+    }
+
+    $scope.deleteTask = async id => {
+        await todoService.deleteTask(id);
+        init();
+    }
 
 }]);
 
-todoApp.controller('createTodoController', ['$scope', '$timeout', 'todoService', function($scope, $timeout, todoService){
-    $scope.message = "";
+todoApp.controller('createTodoController', ['$scope', '$timeout', '$location', 'todoService', function($scope, $timeout, $location, todoService){
     $scope.taskBody;
     $scope.postToServer = function(){
         todoService.postToServer($scope.taskBody);
-        $scope.message = "Success";
+        $scope.taskBody = "";
+        $timeout(()=>{
+            $location.path('/');
+        }, 100);
+        
     }
 
 }]);

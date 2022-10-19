@@ -2,25 +2,18 @@ todoApp.service('todoService', function(){
     let self = this;
     self.todoData;
     self.dataInitiliazed = false;
-    self.initializeData = async function(){
-        if(!self.dataInitiliazed){
-             
-             let res = await fetch('http://127.0.0.1:8080/todo');
-             let data = await res.json();
-             self.todoData = data;
-             console.log("Todo service successfully initialized");
-             self.dataInitiliazed = true;
-            //  console.log(self.todoApp);
-        }else{
-            console.warn("Todo service has already been initialized");
-        }
+    self.initializeData = async function(){             
+        let res = await fetch('http://127.0.0.1:8080/todo');
+        let data = await res.json();
+        self.todoData = data;
+        console.log("Todo service successfully initialized");
+        self.dataInitiliazed = true;
+        return data;
     };
-    self.initializeData();
 
     self.getTodoData = function(){
         if(self.dataInitiliazed) return self.todoData;
         console.error("Todo data hasnt been initialized");
-        // self.getTodoData();
         return -69;
     }
 
@@ -37,22 +30,41 @@ todoApp.service('todoService', function(){
             }
         });
         let data = await res.json();
-        self.dataInitiliazed = false;
         self.initializeData();
         return data;
     }
 
     self.updateTodo = async todoObj =>{
         let res = await fetch(`http://127.0.0.1:8080/update-task/${todoObj.id}`, {
-            method:"POST",
+            method:"PUT",
             body: JSON.stringify(todoObj),
             headers:{
                 "Content-type": "application/json"
             }
         });
         let data = await res.json();
-        self.dataInitiliazed = false;
-        self.initializeData();
         return data;
     }
+
+    self.findTodoObjById = id => {
+       let filteredData = self.todoData.filter(todo => todo.id === id);
+       if(filteredData.length >= 1) return [...filteredData][0];
+       console.error("No such task with id " + id)
+    }
+
+    self.updateTaskDone = async id =>{
+        let todoObj = self.findTodoObjById(id);
+
+        todoObj.done = !todoObj.done;
+
+        await self.updateTodo(todoObj);
+    }
+
+    self.deleteTask = async id => {
+        await fetch(`http://127.0.0.1:8080/delete-todo/${id}`, {
+            method:"DELETE"
+        })
+    }
+    // initialize data upon creation
+    self.initializeData();
 })
