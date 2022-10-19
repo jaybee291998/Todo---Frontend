@@ -1,2 +1,7 @@
-this is create
-{{message}}
+<h2>Task Creation</h2>
+
+<form action="">
+    <label for="task-body">Task:</label>
+    <input type="text" name="task-body" ng-model="taskBody">
+    <input type="button" value="post" ng-click="postToServer()" ng-show="taskBody.length > 12 && taskBody.length < 64">
+</form>
