@@ -1,17 +1,17 @@
-todoApp.controller('homeController', ['$scope', '$timeout',  function($scope, $timeout){
+todoApp.controller('homeController', ['$scope', '$timeout', 'todoService', function($scope, $timeout, todoService){
     $scope.message = "HOME";
 }]);
 
-todoApp.controller('createTodoController', ['$scope', '$timeout', function($scope, $timeout){
+todoApp.controller('createTodoController', ['$scope', '$timeout', 'todoService', function($scope, $timeout, todoService){
     $scope.message = "CREATE";
 }]);
 
-todoApp.controller('updateTodoController', ['$scope', '$timeout', '$routeParams', function($scope, $timeout, $routeParams){
+todoApp.controller('updateTodoController', ['$scope', '$timeout', '$routeParams', 'todoService', function($scope, $timeout, $routeParams, todoService){
     $scope.message = "UPDATE";
     $scope.todoID = $routeParams.id||69;
 }]);
 
-todoApp.controller('deleteTodoController', ['$scope', '$timeout', '$routeParams', function($scope, $timeout, $routeParams){
+todoApp.controller('deleteTodoController', ['$scope', '$timeout', '$routeParams', 'todoService', function($scope, $timeout, $routeParams, todoService){
     $scope.message = "DELETE";
     $scope.todoID = $routeParams.id||69;
 }]);
